@@ -51,13 +51,13 @@ export class RandomNumberService {
   }
 
   startAutoUpdateSafe(
-    _favoriteNumber: number,
-    _numberLength: number,
+    _favoriteNum: number,
+    _numberLen: number,
     updateCallbackFunc: (_generatedNumber: string) => void
   ): void {
     if (this.isAutoUpdateRunning()) {
       this.stopAutoUpdating();
     }
-    this.startAutoUpdate(_favoriteNumber, _numberLength, updateCallbackFunc);
+    this.startAutoUpdate(_favoriteNum, _numberLen, updateCallbackFunc);
   }
 }

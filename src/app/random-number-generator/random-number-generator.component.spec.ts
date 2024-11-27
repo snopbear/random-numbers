@@ -1,9 +1,11 @@
+/* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { RandomNumberGeneratorComponent } from './random-number-generator.component';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RandomNumberService } from '../random-number-service/random-number.service';
+import { of } from 'rxjs';
 
 describe('HomeComponent', () => {
   let _component: RandomNumberGeneratorComponent;
@@ -98,7 +100,7 @@ describe('HomeComponent', () => {
     expect(_component._generatedNumber).toBe('updatedNumber');
   });
 
-  it('should be invalid if favoriteNumber is not exists', () => {
+  it('should be invalid if favoriteNumber is not provided', () => {
     _component._numberForm.setValue({
       favoriteNumber: null,
       numberLength: 5,

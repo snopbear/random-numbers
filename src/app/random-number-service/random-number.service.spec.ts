@@ -15,9 +15,9 @@ describe('Service: RandomNumber', () => {
     expect(_service).toBeTruthy();
   });
   it('should generate a random prefix of specified length', () => {
-    const _numberLength = 5;
-    const _prefix = _service.generateRandomPrefixing(_numberLength);
-    expect(_prefix.length).toBe(_numberLength - 1);
+    const _numberLen = 5;
+    const _prefix = _service.generateRandomPrefixing(_numberLen);
+    expect(_prefix.length).toBe(_numberLen - 1);
     expect(/^\d+$/.test(_prefix)).toBeTrue();
   });
   it('should generate a number of the correct length with the favorite number appended', () => {
@@ -45,12 +45,12 @@ describe('Service: RandomNumber', () => {
   });
 
   it('should return a valid interval ID', () => {
-    const _favoriteNumber = 7;
-    const _numberLength = 5;
+    const _favoriteNum = 7;
+    const _numberLen = 5;
 
     const _intervalId = _service.startAutoUpdate(
-      _favoriteNumber,
-      _numberLength,
+      _favoriteNum,
+      _numberLen,
       _updateCallbackSpy
     );
 
@@ -59,20 +59,20 @@ describe('Service: RandomNumber', () => {
   });
 
   it('should ensure only one interval is running at any time', () => {
-    const _favoriteNumber = 5;
-    const _numberLength = 10;
+    const _favoriteNum = 5;
+    const _numberLen = 10;
 
     // Start the first interval
     const firstIntervalId = _service.startAutoUpdate(
-      _favoriteNumber,
-      _numberLength,
+      _favoriteNum,
+      _numberLen,
       _updateCallbackSpy
     );
 
     // Start a second interval
     const secondIntervalId = _service.startAutoUpdate(
-      _favoriteNumber,
-      _numberLength,
+      _favoriteNum,
+      _numberLen,
       _updateCallbackSpy
     );
     expect(firstIntervalId).not.toEqual(secondIntervalId);
@@ -81,13 +81,13 @@ describe('Service: RandomNumber', () => {
   });
 
   it('should call the update callback with the correct generated number', () => {
-    const _favoriteNumber = 9;
-    const _numberLength = 5;
+    const _favoriteNum = 9;
+    const _numberLen = 5;
 
     spyOn(_service, 'generateRandomPrefixing').and.returnValue('11111'); // Mock prefix
     jasmine.clock().install();
 
-    _service.startAutoUpdate(_favoriteNumber, _numberLength, _updateCallbackSpy);
+    _service.startAutoUpdate(_favoriteNum, _numberLen, _updateCallbackSpy);
     jasmine.clock().tick(5000);
 
     expect(_updateCallbackSpy).toHaveBeenCalledWith('111119');
@@ -97,12 +97,12 @@ describe('Service: RandomNumber', () => {
   });
 
   it('should correctly track auto-update running state', () => {
-    const _favoriteNumber = 7;
-    const _numberLength = 5;
+    const _favoriteNum = 7;
+    const _numberLen = 5;
 
     expect(_service.isAutoUpdateRunning()).toBeFalse();
 
-    _service.startAutoUpdate(_favoriteNumber, _numberLength, _updateCallbackSpy);
+    _service.startAutoUpdate(_favoriteNum, _numberLen, _updateCallbackSpy);
     expect(_service.isAutoUpdateRunning()).toBeTrue();
 
     _service.stopAutoUpdating();
