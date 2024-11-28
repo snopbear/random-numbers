@@ -27,7 +27,7 @@ a {
   transition: background-color 0.3s ease;
 }
 a:hover {
-  color: var(--secondary-color);
+  text-decoration: underline;
 }
 .random {
   color: var(--secondary-color);
