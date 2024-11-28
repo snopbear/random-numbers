@@ -3,7 +3,6 @@ nav {
   padding: 10px;
   border-radius: 2rem 2rem 0 0;
 }
-
 ul {
   list-style-type: none;
   margin: 0;
@@ -27,11 +26,9 @@ a {
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
-
 a:hover {
   color: var(--secondary-color);
 }
-
 .random {
   color: var(--secondary-color);
 }
