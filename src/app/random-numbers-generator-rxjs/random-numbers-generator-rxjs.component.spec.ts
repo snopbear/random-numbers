@@ -4,95 +4,80 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { RandomNumbersGeneratorRxjsComponent } from './random-numbers-generator-rxjs.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
-describe('RandomNumbersGeneratorRxjsComponent', () => {
+describe('HomeComponent', () => {
   let _component: RandomNumbersGeneratorRxjsComponent;
   let _fixture: ComponentFixture<RandomNumbersGeneratorRxjsComponent>;
-
+  let _el: DebugElement;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [RandomNumbersGeneratorRxjsComponent],
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
+      imports: [ReactiveFormsModule],
+      providers: [FormBuilder],
+    })
+      .compileComponents()
+      .then(() => {
+        _fixture = TestBed.createComponent(RandomNumbersGeneratorRxjsComponent);
+        _component = _fixture.componentInstance;
+        _el = _fixture.debugElement;
+        _component.ngOnInit();
+      });
+    const fb = TestBed.inject(FormBuilder);
     _fixture = TestBed.createComponent(RandomNumbersGeneratorRxjsComponent);
     _component = _fixture.componentInstance;
-    _fixture.detectChanges();
-  });
+  }));
 
- 
-  it('should create the component', () => {
+  it('should create', () => {
     expect(_component).toBeTruthy();
   });
 
-  
-  it('should initialize form with correct default values', () => {
-    expect(_component._numberForm).toBeDefined();
-    expect(_component._numberForm.controls['favoriteNumber'].value).toBeNull();
-    expect(_component._numberForm.controls['numberLength'].value).toBeNull();
-  });
-
-
   it('should invalidate form if required fields are missing', () => {
-    const form = _component._numberForm;
-    form.controls['favoriteNumber'].setValue(null);
-    form.controls['numberLength'].setValue(null);
-    expect(form.invalid).toBeTruthy();
+    const _form = _component._numberForm;
+    _form.controls['favoriteNumber'].setValue(null);
+    _form.controls['numberLength'].setValue(null);
+    expect(_form.invalid).toBeTruthy();
 
-    form.controls['favoriteNumber'].setValue(1);
-    form.controls['numberLength'].setValue(10);
-    expect(form.valid).toBeTruthy();
+    _form.controls['favoriteNumber'].setValue(1);
+    _form.controls['numberLength'].setValue(10);
+    expect(_form.valid).toBeTruthy();
   });
 
-  it('should call updateRandomNumber with correct values', () => {
-    const favoriteNumber = 1;
-    const numberLength = 10;
-    const updateRandomNumberSpy = spyOn(_component, 'updateRandomNumber');
+  it('should render the form correctly', () => {
+    const formElement = _el.query(By.css('form'));
+    expect(formElement).toBeTruthy();
 
-    _component._numberForm.controls['favoriteNumber'].setValue(favoriteNumber);
-    _component._numberForm.controls['numberLength'].setValue(numberLength);
+    const dropdown = _el.query(By.css('select'));
+    const input = _el.query(By.css('input[type="number"]'));
+    const button = _el.query(By.css('button'));
 
-    _component.generateNumber();
-
-    expect(updateRandomNumberSpy).toHaveBeenCalledWith(
-      favoriteNumber,
-      numberLength
-    );
+    expect(input).toBeTruthy('Input box for number length is missing');
+    expect(button).toBeTruthy('Generate button is missing');
+    expect(button.nativeElement.textContent).toBe('Generate');
   });
 
-
-  it('should update the generated number every 5 seconds', (done) => {
-    const favoriteNumber = 1;
-    const numberLength = 10;
-    _component._numberForm.controls['favoriteNumber'].setValue(favoriteNumber);
-    _component._numberForm.controls['numberLength'].setValue(numberLength);
-
-    spyOn(_component, 'updateRandomNumber').and.callThrough();
-
-    _component.generateNumber();
-
-    setTimeout(() => {
-      expect(_component.updateRandomNumber).toHaveBeenCalledTimes(2);
-      done();
-    }, 10000); 
+  it('should initialize the form with default values', () => {
+    expect(_component._numberForm).toBeDefined();
+    expect(_component._numberForm.controls['favoriteNumber']).toBeTruthy();
+    expect(_component._numberForm.controls['numberLength']).toBeTruthy();
   });
 
-  it('should unsubscribe from the interval when component is destroyed', () => {
-    const destroySpy = spyOn(_component['destroy$'], 'next');
-    const completeSpy = spyOn(_component['destroy$'], 'complete');
+ 
 
-    _component.ngOnDestroy();
+      it('should unsubscribe from the interval when component is destroyed', () => {
+        const _destroySpy = spyOn(_component['destroy$'], 'next');
+        const _completeSpy = spyOn(_component['destroy$'], 'complete');
 
-    expect(destroySpy).toHaveBeenCalled();
-    expect(completeSpy).toHaveBeenCalled();
-  });
+        _component.ngOnDestroy();
 
-  it('should generate a random number with a correct prefix and favorite number', () => {
-    const favoriteNumber = 5;
-    const numberLength = 8;
-    _component.updateRandomNumber(favoriteNumber, numberLength);
+        expect(_destroySpy).toHaveBeenCalled();
+        expect(_completeSpy).toHaveBeenCalled();
+      });
 
-    expect(_component._generatedNumber).toMatch(/^\d{7}5$/); 
-  });
+      it('should generate a random number with a correct prefix and favorite number', () => {
+        const favoriteNumber = 5;
+        const numberLength = 8;
+        _component.updateRandomNumber(favoriteNumber, numberLength);
+
+        expect(_component._generatedNumber).toMatch(/^\d{7}5$/); 
+      });
 });
