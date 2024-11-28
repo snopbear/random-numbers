@@ -32,7 +32,6 @@ export class RandomNumbersGeneratorRxjsComponent implements OnInit ,OnDestroy {
   generateNumber(): void {
     const { favoriteNumber, numberLength } = this._numberForm.value;
     if (!this._numberForm.valid) {
-      alert('Please fill all fields correctly!');
       return;
     }
     this.updateRandomNumber(favoriteNumber, numberLength);

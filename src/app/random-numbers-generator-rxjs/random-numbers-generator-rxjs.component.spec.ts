@@ -45,7 +45,7 @@ describe('RandomNumbersGeneratorRxjsComponent', () => {
     expect(form.valid).toBeTruthy();
   });
 
-  it('should call updateRandomNumber with correct values when form is valid', () => {
+  it('should call updateRandomNumber with correct values', () => {
     const favoriteNumber = 1;
     const numberLength = 10;
     const updateRandomNumberSpy = spyOn(_component, 'updateRandomNumber');
@@ -61,13 +61,6 @@ describe('RandomNumbersGeneratorRxjsComponent', () => {
     );
   });
 
-  it('should display an alert when form is invalid', () => {
-    spyOn(window, 'alert');
-    _component.generateNumber();
-    expect(window.alert).toHaveBeenCalledWith(
-      'Please fill all fields correctly!'
-    );
-  });
 
   it('should update the generated number every 5 seconds', (done) => {
     const favoriteNumber = 1;
